@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MAGMA — Magnetically Actuated Gear Mechanism Assembly. A hybrid actuator with contactless torque transmission and SMA position locking.">
+    <title>MAGMA — Hybrid Actuator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⬡</text></svg>">
+</head>
+<body>
+
+    <!-- ══ NAV ══════════════════════════════════════════ -->
+    <header class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="logo">
+                <span class="logo-mark">M</span>
+                <span class="logo-text">MAGMA</span>
+            </a>
+            <div class="nav-links">
+                <a href="#hero">Product</a>
+                <a href="#specs">Specs</a>
+                <a href="#tech">Technology</a>
+                <a href="#compare">Compare</a>
+            </div>
+            <div class="nav-pill" id="navPill">
+                <span class="nav-pill-dot"></span>
+                <span id="navMode">Standby</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══ HERO ═════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+        <!-- 3D Viewport takes the full hero -->
+        <div class="viewport" id="viewportWrap">
+            <canvas id="viewport3d"></canvas>
+            <div id="vp-tooltip"></div>
+
+            <!-- Overlay: product name -->
+            <div class="hero-overlay">
+                <div class="hero-text">
+                    <p class="hero-eyebrow">Honeywell Design-Thon 2026</p>
+                    <h1 class="hero-title">MAGMA</h1>
+                    <p class="hero-sub">Magnetically Actuated Gear Mechanism Assembly</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-val" id="hsRpm">0</span>
+                        <span class="hero-stat-unit">RPM</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-val" id="hsTorque">0.0</span>
+                        <span class="hero-stat-unit">Nm</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-val" id="hsPower">0.0</span>
+                        <span class="hero-stat-unit">W</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mode badge top-right -->
+            <div class="mode-badge">
+                <span class="mode-dot" id="modeDot"></span>
+                <span id="modeLabel">STANDBY</span>
+            </div>
+
+            <!-- Bottom controls bar -->
+            <div class="controls-bar">
+                <div class="view-group">
+                    <button class="ctrl-btn active" id="btnAssembled" onclick="setView('assembled')">Assembled</button>
+                    <button class="ctrl-btn" id="btnExploded" onclick="setView('exploded')">Exploded</button>
+                    <button class="ctrl-btn" id="btnSection" onclick="setView('section')">Section</button>
+                    <button class="ctrl-btn" id="btnWireframe" onclick="setView('wireframe')">Wire</button>
+                </div>
+                <div class="sim-group">
+                    <button class="sim-btn run" onclick="startSim('run')">▶ Run</button>
+                    <button class="sim-btn hold" onclick="startSim('hold')">◼ SMA Hold</button>
+                    <button class="sim-btn stop" onclick="startSim('stop')">■ Stop</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="scroll-hint">
+            <span>Scroll to explore</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+    </section>
+
+    <!-- ══ KEY NUMBERS ══════════════════════════════════ -->
+    <section class="numbers" id="specs">
+        <div class="numbers-inner">
+            <div class="num-card">
+                <span class="num-val">85.0<small>Nm</small></span>
+                <span class="num-label">Output Torque</span>
+            </div>
+            <div class="num-card">
+                <span class="num-val">60<small>RPM</small></span>
+                <span class="num-label">Output Speed</span>
+            </div>
+            <div class="num-card">
+                <span class="num-val">3.5<small>kg</small></span>
+                <span class="num-label">System Mass</span>
+            </div>
+            <div class="num-card">
+                <span class="num-val">93<small>%</small></span>
+                <span class="num-label">Power Saved (Hold)</span>
+            </div>
+            <div class="num-card">
+                <span class="num-val">4.25<small>:1</small></span>
+                <span class="num-label">Gear Ratio</span>
+            </div>
+            <div class="num-card">
+                <span class="num-val">&lt;5<small>dB</small></span>
+                <span class="num-label">Noise Level</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ TECHNOLOGY ═══════════════════════════════════ -->
+    <section class="content-section" id="tech">
+        <div class="content-inner">
+            <p class="section-eyebrow">Core Technology</p>
+            <h2 class="section-heading">Two systems.<br>One actuator.</h2>
+            <p class="section-body">MAGMA combines contactless coaxial magnetic gearing with Nitinol shape memory alloy position locking — eliminating gear wear and reducing holding power by 93%.</p>
+
+            <div class="tech-cards">
+                <div class="tech-card">
+                    <div class="tech-icon">⚡</div>
+                    <h3>Coaxial Magnetic Gear</h3>
+                    <p>4 inner / 17 outer pole pairs with 21 SMC modulation segments. Contactless torque multiplication at 95% efficiency. Built-in overload protection via magnetic slip.</p>
+                    <div class="tech-specs">
+                        <div><span class="ts-label">Magnets</span><span class="ts-val">N42 NdFeB</span></div>
+                        <div><span class="ts-label">Pull-out</span><span class="ts-val">120 Nm</span></div>
+                        <div><span class="ts-label">Efficiency</span><span class="ts-val">95%</span></div>
+                        <div><span class="ts-label">Air Gap</span><span class="ts-val">1 mm</span></div>
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔒</div>
+                    <h3>SMA Position Lock</h3>
+                    <p>6 Nitinol wires undergo martensite→austenite phase transformation at 78°C, contracting 4% to clamp the brake drum. Motor shuts off entirely during hold.</p>
+                    <div class="tech-specs">
+                        <div><span class="ts-label">Wires</span><span class="ts-val">6 × Ø2.0mm</span></div>
+                        <div><span class="ts-label">Hold Torque</span><span class="ts-val">100 Nm</span></div>
+                        <div><span class="ts-label">Hold Power</span><span class="ts-val">12.0 W</span></div>
+                        <div><span class="ts-label">Cycle Life</span><span class="ts-val">&gt;100k</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ LIVE PERFORMANCE (expandable) ════════════════ -->
+    <section class="content-section dark" id="performance">
+        <div class="content-inner">
+            <p class="section-eyebrow">Live Simulation</p>
+            <h2 class="section-heading">Real-time telemetry</h2>
+            <p class="section-body">Click <strong>Run</strong> in the 3D viewport above to see live data stream from the physics simulation.</p>
+
+            <div class="telem-bar">
+                <div class="telem-item"><span class="telem-label">Speed</span><span class="telem-val" id="tlRpm">0</span><span class="telem-unit">RPM</span></div>
+                <div class="telem-item"><span class="telem-label">Torque</span><span class="telem-val" id="tlTorque">0.0</span><span class="telem-unit">Nm</span></div>
+                <div class="telem-item"><span class="telem-label">Power</span><span class="telem-val" id="tlPower">0.0</span><span class="telem-unit">W</span></div>
+                <div class="telem-item"><span class="telem-label">Efficiency</span><span class="telem-val" id="tlEff">0</span><span class="telem-unit">%</span></div>
+                <div class="telem-item"><span class="telem-label">Mode</span><span class="telem-val" id="tlMode">STANDBY</span><span class="telem-unit"></span></div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-box">
+                    <span class="chart-title">Torque & Speed</span>
+                    <canvas id="chartTorqueSpeed" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-box">
+                    <span class="chart-title">Output Power</span>
+                    <canvas id="chartPowerEff" class="chart-canvas"></canvas>
+                </div>
+            </div>
+
+            <!-- SMA detail — collapsible -->
+            <details class="sma-details">
+                <summary class="sma-summary">SMA Brake Status</summary>
+                <div class="sma-detail-inner">
+                    <div class="sma-row">
+                        <span>Temperature</span>
+                        <div class="bar-track"><div class="bar-fill" id="smaTempBar" style="width:0%"></div></div>
+                        <span class="sma-val" id="smaTemp">25°C</span>
+                    </div>
+                    <div class="sma-row">
+                        <span>Clamp Force</span>
+                        <div class="bar-track"><div class="bar-fill green" id="smaForceBar" style="width:0%"></div></div>
+                        <span class="sma-val" id="smaForce">0%</span>
+                    </div>
+                    <div class="sma-row">
+                        <span>Contraction</span>
+                        <div class="bar-track"><div class="bar-fill blue" id="smaContractBar" style="width:0%"></div></div>
+                        <span class="sma-val" id="smaContract">0.0 mm</span>
+                    </div>
+                    <div class="sma-phase" id="smaPhaseBox">MARTENSITE — Wire Relaxed</div>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ══ COMPARISON ═══════════════════════════════════ -->
+    <section class="content-section" id="compare">
+        <div class="content-inner">
+            <p class="section-eyebrow">Competitive Analysis</p>
+            <h2 class="section-heading">How MAGMA compares</h2>
+            <p class="section-body">Benchmarked against commercial heavy-duty actuators in the 3.5 kg class.</p>
+
+            <div class="table-wrap">
+                <table class="compare-table">
+                    <thead>
+                        <tr><th>Metric</th><th>Kollmorgen RBE</th><th>Maxon EC90+GP</th><th>Harmonic FHA-25C</th><th class="ours">MAGMA</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Output Torque</td><td>40.0 Nm</td><td>60.0 Nm</td><td>67.0 Nm</td><td class="ours">85.0 Nm</td></tr>
+                        <tr><td>Output Speed</td><td>45 RPM</td><td>50 RPM</td><td>40 RPM</td><td class="ours">60 RPM</td></tr>
+                        <tr><td>System Mass</td><td>1.4 kg</td><td>3.1 kg</td><td>3.4 kg</td><td class="ours">3.5 kg</td></tr>
+                        <tr><td>Efficiency</td><td>80%</td><td>78%</td><td>72%</td><td class="ours win">95%</td></tr>
+                        <tr><td>Hold Power</td><td>45 W</td><td>55 W</td><td>50 W</td><td class="ours win">12.0 W</td></tr>
+                        <tr><td>Noise</td><td>55 dB</td><td>50 dB</td><td>40 dB</td><td class="ours win">&lt;5 dB</td></tr>
+                        <tr><td>Gear Wear</td><td>High</td><td>Medium</td><td>Low</td><td class="ours win">None</td></tr>
+                        <tr><td>Overload Protection</td><td>—</td><td>Add-on</td><td>—</td><td class="ours win">Built-in</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ TRL ══════════════════════════════════════════ -->
+    <section class="content-section dark">
+        <div class="content-inner" style="text-align:center;">
+            <p class="section-eyebrow">Readiness</p>
+            <h2 class="section-heading">Technology Readiness Level 4</h2>
+            <p class="section-body" style="margin:0 auto 2rem;">Component validation in laboratory environment.</p>
+            <div class="trl-bar">
+                <div class="trl-fill" style="width:44.4%;">TRL 4</div>
+            </div>
+            <div class="trl-labels">
+                <span>TRL 1</span><span>TRL 5</span><span>TRL 9</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ═══════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <span class="footer-brand">MAGMA</span>
+                <p class="footer-desc">Magnetically Actuated Gear Mechanism Assembly.<br>Hybrid coaxial magnetic gear + SMA position-locking actuator.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#hero">Product</a>
+                <a href="#specs">Specifications</a>
+                <a href="#tech">Technology</a>
+                <a href="#compare">Comparison</a>
+            </div>
+            <div class="footer-copy">
+                <span>© 2026 MAGMA — Honeywell Design-Thon</span>
+                <span>Three.js · Python · NumPy · SciPy</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══ FLOATING MINI-SIM WIDGET ═════════════════════ -->
+    <div class="mini-sim-widget" id="miniSimWidget">
+        <div class="widget-header" onclick="toggleWidget()">
+            <div class="widget-title">
+                <span class="mode-dot" id="widgetModeDot"></span>
+                <span>Simulation Control</span>
+            </div>
+            <div class="widget-toggle" id="widgetToggle">▼</div>
+        </div>
+        <div class="widget-body" id="widgetBody">
+            <div class="widget-controls">
+                <button class="sim-btn run block" onclick="startSim('run')">▶ Run</button>
+                <button class="sim-btn hold block" onclick="startSim('hold')">◼ Hold</button>
+                <button class="sim-btn stop block" onclick="startSim('stop')">■ Stop</button>
+            </div>
+            <div class="widget-sliders">
+                <div class="slider-group">
+                    <label>Target Speed <span class="val" id="widgetSpeedVal">75 RPM</span></label>
+                    <input type="range" class="custom-slider" id="widgetSpeedSlider" min="0" max="150" value="75">
+                </div>
+                <div class="slider-group">
+                    <label>Target Load <span class="val" id="widgetTorqueVal">2.5 Nm</span></label>
+                    <input type="range" class="custom-slider" id="widgetTorqueSlider" min="0" max="5" value="2.5" step="0.1">
+                </div>
+            </div>
+            <div class="widget-telemetry">
+                <div class="w-stat">
+                    <span class="w-lbl">Real RPM</span>
+                    <span class="w-val" id="widgetRealRpm">0</span>
+                </div>
+                <div class="w-stat">
+                    <span class="w-lbl">Power</span>
+                    <span class="w-val" id="widgetRealPower">0.0 W</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="engine3d.js"></script>
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+        });
+    </script>
+</body>
+</html>

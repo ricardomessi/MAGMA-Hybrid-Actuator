@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated helper scripts (not needed in repo)
+update_heavy_duty.py
+update_heavy_duty_web.py
+generate_docx.py
+generate_report.py
+
+# Old root-level files (not needed in repo)
+/app.js
+/index.html
+/style.css
+/DESIGN_REPORT_Hybrid_Actuator.md
+/MAGMA_Design_Report.md
+/MAGMA_Design_Report.html
+/MAGMA_Design_Report.pdf
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/
+package-lock.json

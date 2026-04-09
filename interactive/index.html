@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Actuator — 3D Interactive Blueprint</title>
+    <meta name="description" content="Full 3D interactive engineering model of the Magnetic Gear + SMA Hybrid Actuator with real dimensions, exploded view, and simulation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="scanline-overlay"></div>
+
+    <!-- Header -->
+    <header id="main-header">
+        <div class="header-left">
+            <div class="logo-mark">
+                <svg width="32" height="32" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" r="14" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+                    <circle cx="16" cy="16" r="8" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2"/>
+                    <circle cx="16" cy="16" r="3" fill="var(--accent)"/>
+                </svg>
+            </div>
+            <div>
+                <h1>HYBRID ACTUATOR <span class="tag-3d">3D</span></h1>
+                <p class="subtitle">Magnetic Gear + SMA Brake — Interactive 3D Blueprint</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-indicator">
+                <span class="dot" id="status-dot"></span>
+                <span id="status-text">STANDBY</span>
+            </div>
+            <div class="header-stats">
+                <div class="stat-chip"><span class="stat-label">RPM</span><span class="stat-value" id="rpm-display">0</span></div>
+                <div class="stat-chip"><span class="stat-label">Torque</span><span class="stat-value" id="torque-display">0.0 Nm</span></div>
+                <div class="stat-chip"><span class="stat-label">Power</span><span class="stat-value" id="power-display">0.0 W</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Left Panel -->
+        <aside id="left-panel">
+            <div class="panel-section">
+                <h3 class="panel-title">3D VIEW</h3>
+                <div class="view-controls">
+                    <button class="view-btn active" id="btn-assembled" data-view="assembled">⬡ Assembled</button>
+                    <button class="view-btn" id="btn-exploded" data-view="exploded">⬢ Exploded View</button>
+                    <button class="view-btn" id="btn-cross" data-view="cross">◐ Cross Section</button>
+                    <button class="view-btn" id="btn-wireframe" data-view="wireframe">◇ Wireframe</button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">COMPONENTS</h3>
+                <div class="component-list" id="component-list">
+                    <button class="component-btn" data-component="stator"><span class="comp-icon" style="background:#f97316"></span><span class="comp-name">Stator</span><span class="comp-badge">BLDC</span></button>
+                    <button class="component-btn" data-component="rotor"><span class="comp-icon" style="background:#ef4444"></span><span class="comp-name">Rotor</span><span class="comp-badge">BLDC</span></button>
+                    <button class="component-btn" data-component="highSpeedRotor"><span class="comp-icon" style="background:#a855f7"></span><span class="comp-name">High-Speed Rotor</span><span class="comp-badge">GEAR</span></button>
+                    <button class="component-btn" data-component="modulationRing"><span class="comp-icon" style="background:#64748b"></span><span class="comp-name">Modulation Ring</span><span class="comp-badge">GEAR</span></button>
+                    <button class="component-btn" data-component="lowSpeedRotor"><span class="comp-icon" style="background:#3b82f6"></span><span class="comp-name">Low-Speed Rotor</span><span class="comp-badge">GEAR</span></button>
+                    <button class="component-btn" data-component="outputShaft"><span class="comp-icon" style="background:#8b5cf6"></span><span class="comp-name">Output Shaft</span><span class="comp-badge">OUT</span></button>
+                    <button class="component-btn" data-component="smaWires"><span class="comp-icon" style="background:#22c55e"></span><span class="comp-name">SMA Wires</span><span class="comp-badge">BRAKE</span></button>
+                    <button class="component-btn" data-component="brakeDrum"><span class="comp-icon" style="background:#78716c"></span><span class="comp-name">Brake Drum</span><span class="comp-badge">BRAKE</span></button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">SIMULATION</h3>
+                <div class="sim-controls">
+                    <button class="sim-btn primary" id="btn-run">▶ RUN</button>
+                    <button class="sim-btn warn" id="btn-hold">⊞ SMA HOLD</button>
+                    <button class="sim-btn danger" id="btn-stop">■ STOP</button>
+                </div>
+                <div class="speed-control">
+                    <label>Speed: <span id="speed-val">75</span> RPM</label>
+                    <input type="range" id="speed-slider" min="0" max="100" value="60">
+                </div>
+                <div class="speed-control">
+                    <label>Load: <span id="torque-val">2.5</span> Nm</label>
+                    <input type="range" id="torque-slider" min="0" max="100" value="45.0" step="0.1">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">CAMERA</h3>
+                <div class="cam-presets">
+                    <button class="cam-btn" data-cam="front">Front</button>
+                    <button class="cam-btn" data-cam="side">Side</button>
+                    <button class="cam-btn" data-cam="top">Top</button>
+                    <button class="cam-btn" data-cam="iso">Iso</button>
+                    <button class="cam-btn" data-cam="sma">SMA Detail</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 3D Viewport -->
+        <section id="viewport">
+            <div id="three-container"></div>
+            <div class="viewport-hud">
+                <div class="hud-corner top-left"><span class="hud-label" id="hud-mode">MODE: STANDBY</span></div>
+                <div class="hud-corner top-right"><span class="hud-label" id="hud-cam">ORBIT · SCROLL TO ZOOM</span></div>
+                <div class="hud-corner bottom-left"><span class="hud-label" id="hud-dims">SCALE: 1mm = 1 UNIT</span></div>
+                <div class="hud-corner bottom-right"><span class="hud-label" id="hud-temp">SMA: 25°C</span></div>
+            </div>
+            <div id="tooltip" class="tooltip"></div>
+        </section>
+
+        <!-- Right Panel -->
+        <aside id="right-panel">
+            <div class="panel-section" id="component-info">
+                <h3 class="panel-title">COMPONENT DATA</h3>
+                <div id="info-content">
+                    <div class="info-header"><h4 id="info-title">Hybrid Actuator Assembly</h4><span class="info-tag" id="info-tag">SYSTEM</span></div>
+                    <p class="info-desc" id="info-desc">Click any 3D component to inspect. Drag to orbit, scroll to zoom. Double-click to focus on a part.</p>
+                    <div class="spec-grid" id="spec-grid">
+                        <div class="spec-item"><span class="spec-label">Output Torque</span><span class="spec-value">85.0 Nm</span></div>
+                        <div class="spec-item"><span class="spec-label">Output Speed</span><span class="spec-value">60 RPM</span></div>
+                        <div class="spec-item"><span class="spec-label">Gear Ratio</span><span class="spec-value">4.25:1</span></div>
+                        <div class="spec-item"><span class="spec-label">Efficiency</span><span class="spec-value">90%</span></div>
+                        <div class="spec-item"><span class="spec-label">Total Mass</span><span class="spec-value">3.5 kg</span></div>
+                        <div class="spec-item"><span class="spec-label">Supply</span><span class="spec-value">24 V DC</span></div>
+                        <div class="spec-item"><span class="spec-label">Hold Power</span><span class="spec-value">3.5 W</span></div>
+                        <div class="spec-item"><span class="spec-label">Noise</span><span class="spec-value">&lt;5 dB</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">SMA BRAKE STATUS</h3>
+                <div class="sma-visual" id="sma-visual">
+                    <div class="sma-diagram">
+                        <div class="sma-wire-vis" id="sma-wire-vis">
+                            <svg viewBox="0 0 200 80" width="100%">
+                                <defs>
+                                    <linearGradient id="wireGrad" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0%" stop-color="#22c55e" id="wire-stop1"/>
+                                        <stop offset="100%" stop-color="#22c55e" id="wire-stop2"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="100" y="12" text-anchor="middle" fill="#64748b" font-size="8" font-family="JetBrains Mono">SMA WIRE PHASE TRANSFORMATION</text>
+                                <!-- Martensite (relaxed) -->
+                                <path id="sma-wave" d="M10,50 Q30,30 50,50 Q70,70 90,50 Q110,30 130,50 Q150,70 170,50 Q190,30 195,50" fill="none" stroke="url(#wireGrad)" stroke-width="3" stroke-linecap="round"/>
+                                <circle id="sma-dot1" cx="10" cy="50" r="3" fill="#22c55e"/>
+                                <circle id="sma-dot2" cx="195" cy="50" r="3" fill="#22c55e"/>
+                                <text x="10" y="75" fill="#64748b" font-size="7" font-family="JetBrains Mono">RELAXED</text>
+                                <text x="155" y="75" fill="#64748b" font-size="7" font-family="JetBrains Mono">CLAMPED</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="sma-bars">
+                    <div class="sma-row"><span class="sma-lbl">Temperature</span><div class="sma-bar"><div class="sma-fill temp" id="sma-temp-bar"></div></div><span class="sma-val" id="sma-temp-val">25°C</span></div>
+                    <div class="sma-row"><span class="sma-lbl">Clamp Force</span><div class="sma-bar"><div class="sma-fill force" id="sma-force-bar"></div></div><span class="sma-val" id="sma-force-val">0%</span></div>
+                    <div class="sma-row"><span class="sma-lbl">Contraction</span><div class="sma-bar"><div class="sma-fill contract" id="sma-contract-bar"></div></div><span class="sma-val" id="sma-contract-val">0 mm</span></div>
+                    <div class="sma-phase"><span>Phase:</span><span id="sma-phase-text">MARTENSITE (Cool)</span></div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">POWER FLOW</h3>
+                <div class="power-flow-vertical">
+                    <div class="pf-step"><div class="pf-icon">⚡</div><div><div class="pf-name">Electrical Input</div><div class="pf-val" id="pf-in">0 W</div></div></div>
+                    <div class="pf-connector"></div>
+                    <div class="pf-step"><div class="pf-icon">⊛</div><div><div class="pf-name">BLDC Motor <span class="pf-eff">η 88%</span></div><div class="pf-val" id="pf-motor">0 W</div></div></div>
+                    <div class="pf-connector"></div>
+                    <div class="pf-step"><div class="pf-icon">⚙</div><div><div class="pf-name">Mag. Gear <span class="pf-eff">η 95%</span> · 4.25:1</div><div class="pf-val" id="pf-gear">0 W</div></div></div>
+                    <div class="pf-connector"></div>
+                    <div class="pf-step active"><div class="pf-icon">↻</div><div><div class="pf-name">Mechanical Output</div><div class="pf-val" id="pf-out">0 W</div></div></div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">REAL-TIME CHART</h3>
+                <div class="chart-legend">
+                    <span class="legend-item"><span class="legend-dot" style="background:#38bdf8"></span>RPM</span>
+                    <span class="legend-item"><span class="legend-dot" style="background:#e879f9"></span>Torque</span>
+                    <span class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Power</span>
+                </div>
+                <canvas id="perf-chart" width="260" height="100"></canvas>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">HOW IT WORKS</h3>
+                <div class="working-text" id="working-text">
+                    <p><strong>Motion Mode:</strong> BLDC motor spins the high-speed rotor (4 pole pairs). Magnetic field couples through the 21-segment modulation ring to drive the low-speed rotor (17 pole pairs) at 4.25× torque multiplication — all contactless.</p>
+                    <p><strong>Hold Mode:</strong> 6 Nitinol SMA wires wrap the brake drum. 0.5A current heats them past 78°C → crystal structure shifts from Martensite to Austenite → wires contract 4% (6mm) → clamp the shaft with 100 Nm holding torque. Motor shuts off. Hold power: only 3.5W.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="engine3d.js"></script>
+</body>
+</html>
